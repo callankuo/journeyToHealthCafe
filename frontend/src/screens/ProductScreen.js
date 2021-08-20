@@ -78,6 +78,9 @@ function ProductScreen( {history, match} ) {
                         Price: ${product.price}
                     </ListGroup.Item>
                     <ListGroup.Item>
+                        Point: {product.point}
+                    </ListGroup.Item>
+                    <ListGroup.Item>
                         Description: {product.description}
                     </ListGroup.Item>
                 </ListGroup> 
@@ -90,6 +93,14 @@ function ProductScreen( {history, match} ) {
                                 <Col>Price:</Col>
                                 <Col>
                                     <strong>${product.price}</strong>
+                                </Col>
+                            </Row>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Point:</Col>
+                                <Col>
+                                    <strong>${product.point}</strong>
                                 </Col>
                             </Row>
                         </ListGroup.Item>

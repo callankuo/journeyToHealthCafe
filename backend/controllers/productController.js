@@ -7,7 +7,7 @@ import asyncHandler from 'express-async-handler'
 const getProducts = asyncHandler(async (req,res) => {
     
     //pagenation control
-    const pageSize = 3
+    const pageSize = 8
     const page = Number(req.query.pageNumber) || 1
     //search keyword
     const keyword = req.query.keyword ? { 
@@ -65,6 +65,7 @@ const createProduct = asyncHandler(async (req,res) => {
     const product = new Product({
         name: 'Sample name',
         price: 0,
+        point: 0,
         user: req.user._id,
         image: '/images/sample.jpg',
         brand: 'sample brand',
@@ -84,7 +85,7 @@ const createProduct = asyncHandler(async (req,res) => {
 // @access private/admin
 const updateProduct = asyncHandler(async (req,res) => {
     
-    const {name, price, description, image, brand, category, countInStock} = req.body
+    const {name, price, point, description, image, brand, category, countInStock} = req.body
 
     const product = await Product.findById(req.params.id)
     
@@ -92,6 +93,7 @@ const updateProduct = asyncHandler(async (req,res) => {
 
         product.name = name
         product.price = price
+        product.point = point
         product.description = description
         product.category = category
         product.brand= brand
@@ -154,7 +156,7 @@ const createProductReview = asyncHandler(async (req,res) => {
 // @route POST /api/products/top
 // @access public
 const getTopProducts = asyncHandler(async (req,res) => {
-    const products = await Product.find({}).sort({rating: -1}).limit(3)
+    const products = await Product.find({}).sort({rating: -1}).limit(6)
     res.json(products)
 })
 

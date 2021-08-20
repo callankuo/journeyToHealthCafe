@@ -15,6 +15,7 @@ const ProductEditScreen = ({match, history}) => {
 
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
+    const [point, setPoint] = useState(0)
     const [image, setImage] = useState('')
     const [description, setDescription] = useState('')
     const [brand, setBrand] = useState('')
@@ -44,6 +45,7 @@ const ProductEditScreen = ({match, history}) => {
                     setDescription(product.description)
                     setImage(product.image)
                     setPrice(product.price)
+                    setPoint(product.point)
                     setBrand(product.brand)
                     setCategory(product.category)
                     setCountInStock(product.countInStock)
@@ -82,6 +84,7 @@ const ProductEditScreen = ({match, history}) => {
                 _id: productId,
                 name,
                 price,
+                point,
                 image,
                 brand,
                 category,
@@ -119,6 +122,15 @@ const ProductEditScreen = ({match, history}) => {
                             placeholder='Enter price'
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
+                        ></Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId='point'>
+                        <Form.Label>Point</Form.Label>
+                        <Form.Control
+                            type='number'
+                            placeholder='Enter point'
+                            value={point}
+                            onChange={(e) => setPoint(e.target.value)}
                         ></Form.Control>
                     </Form.Group>
                     <Form.Group controlId='image'>

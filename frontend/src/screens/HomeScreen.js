@@ -32,7 +32,7 @@ const HomeScreen = ({match}) => {
                 Go Back
             </Link>
         ) }
-            <h1>Hottest Products</h1>
+            <h1>Journey To Good Health ...</h1>
             {loading ? (<Loader />)
             : error ? (<Message variant='danger'>{error}</Message>)
             : (

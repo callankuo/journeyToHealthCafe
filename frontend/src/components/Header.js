@@ -17,10 +17,18 @@ const Header = () => {
 
     return (
         <header>
-    <Navbar bg="dark"  variant="dark" expand="lg" collapseOnSelect>
+    <Navbar bg='light' variant="light" expand="lg" collapseOnSelect>
   <Container>
     <LinkContainer to='/'>
-    <Navbar.Brand>Journey To Good Health</Navbar.Brand>
+    <Navbar.Brand>
+    <img
+        src="/images/journeycafe.png"
+        width="140"
+        height="60"
+        className="d-inline-block align-top"
+        alt="Journey Cafe"
+      />
+    </Navbar.Brand>
     </LinkContainer>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">

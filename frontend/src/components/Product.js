@@ -1,14 +1,30 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { Card } from 'react-bootstrap'
+import { Card, Row} from 'react-bootstrap'
 import Rating from './Rating'
 
 function Product( {product}) {
+    const styles = {
+        card: {
+          backgroundColor: 'rgb(231, 236, 231)',
+          borderRadius: 55,
+          padding: '1rem'
+        },
+        cardImage: {
+          objectFit: 'cover',
+          borderRadius: 55,
+          width: '90%',
+          height: '16vw'
+        }
+      }
     return (
-        <Card className='my-3 p-3 rounded'>
+        <Card className="m-10 border-0 shadow" style={styles.card}>
+            <Row>
             <Link to={`/product/${product._id}`}>
-            <Card.Img src={product.image} variant='top' />
+            <Card.Img src={product.image} variant='top' style={styles.cardImage} />
             </Link>
+            </Row>
+            <Row>
             <Card.Body>
             <Link top={`/product/${product._id}`}>
                 <Card.Title as='div' >
@@ -22,9 +38,11 @@ function Product( {product}) {
                         
                     />
                 </Card.Text>
-                <Card.Text as='h3'>${product.price}</Card.Text>
+                <Card.Text as='h3'>${product.price} Or P({product.point})</Card.Text>
             </Card.Body>
+            </Row>
         </Card>
+       
     )
 }
 

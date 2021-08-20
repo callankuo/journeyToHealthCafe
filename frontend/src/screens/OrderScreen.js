@@ -8,7 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET} from '../constants/orderConstants'
-
+//import { cartReset } from '../actions/cartActions'
 const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
 
@@ -52,16 +52,18 @@ const OrderScreen = ({match, history}) => {
             document.body.appendChild(script)
         }
         if (!order || successPay || successDeliver) {
+       
         dispatch({ type: ORDER_PAY_RESET})
         dispatch({ type: ORDER_DELIVER_RESET})
         dispatch(getOrderDetails(orderId))
+        
         } else if (!order.isPaid) {
             if (!window.paypal) {
                 addPayPalScript()
             } else {
                 setSdkReady(true)
             }
-        }
+        } 
     }, [dispatch, history, userInfo, orderId, successPay, order, successDeliver])
 
     const successPaymentHandler = (paymentResult) => {

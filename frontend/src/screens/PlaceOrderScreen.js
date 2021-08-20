@@ -5,6 +5,8 @@ import {Button, Row, Col, ListGroup, Image, Card} from 'react-bootstrap'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
+//import { cartReset } from '../actions/cartActions'
+//import { CART_RESET } from '../constants/cartConstants'
 
 const PlaceOrderScreen = ({history}) => {
 
@@ -26,6 +28,7 @@ const PlaceOrderScreen = ({history}) => {
 
     useEffect(() => {
         if (success) {
+            //dispatch(cartReset())
             history.push(`/order/${order._id}`)
         }
         // eslint-disable-next-line
