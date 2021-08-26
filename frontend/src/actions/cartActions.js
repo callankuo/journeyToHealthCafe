@@ -11,6 +11,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
                 name: data.name,
                 image: data.image,
                 price: data.price,
+                point: data.point,
                 countInStock: data.countInStock,
                 qty
 
@@ -44,9 +45,9 @@ export const savePaymentMethod = (data) => (dispatch) => {
     localStorage.setItem('paymentMethod', JSON.stringify(data))
 }
 
-export const cartReset = () => (dispatch) => {
+export const cartReset = () => (dispatch, getState) => {
     dispatch({
         type: CART_RESET
     })
-    localStorage.removeItem('cartItems')
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 }

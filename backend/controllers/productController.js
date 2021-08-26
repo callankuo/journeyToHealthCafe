@@ -16,9 +16,13 @@ const getProducts = asyncHandler(async (req,res) => {
             $options : 'i'
         }
     } : {}
-
-    const count = await Product.countDocuments({...keyword})
-    const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1))
+    const category = req.query.category? { category: req.query.category} : {}
+    var count
+    if (category.category) count = await Product.countDocuments({...category})
+    else count = await Product.countDocuments({...keyword})
+    var products
+    if (category.category) products = await Product.find(category).limit(pageSize).skip(pageSize * (page - 1))
+    else products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1))
     //throw new Error('some error')
     
     res.json({products, page, pages: Math.ceil(count/pageSize)})

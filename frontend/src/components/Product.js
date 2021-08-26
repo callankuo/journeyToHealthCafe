@@ -13,8 +13,9 @@ function Product( {product}) {
         cardImage: {
           objectFit: 'cover',
           borderRadius: 55,
-          width: '90%',
-          height: '16vw'
+          width: '100%',
+          
+          height: '20vw'
         }
       }
     return (

@@ -7,8 +7,10 @@ import {Row, Col, ListGroup, Image, Card, Button} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET} from '../constants/orderConstants'
-//import { cartReset } from '../actions/cartActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET} from '../constants/orderConstants'
+import { POINT_DOLLAR_RATE } from '../constants/configConstants'
+import { cartReset } from '../actions/cartActions'
+import { updateUser } from '../actions/userActions'
 const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
 
@@ -18,6 +20,9 @@ const OrderScreen = ({match, history}) => {
 
     const orderDetails = useSelector(state => state.orderDetails) 
     const { order, loading, error } = orderDetails
+    
+    //const orderCreate = useSelector(state => state.orderCreate) 
+    //const { order, loading, error } = orderCreate
 
     const orderPay = useSelector(state => state.orderPay) 
     const {loading:loadingPay, success:successPay} = orderPay
@@ -28,12 +33,13 @@ const OrderScreen = ({match, history}) => {
     const userLogin = useSelector(state => state.userLogin) 
     const { userInfo } = userLogin
 
-    if (!loading) {
+    if (!loading && order) {
     //calculate price 
     const addDecimals = (num) => {
         return (Math.round(num *100) /100).toFixed(2)
     }
     order.itemsPrice = addDecimals(order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+    order.itemSubTotal = Number(order.itemsPrice - order.promoAmount - (order.applyPoint * POINT_DOLLAR_RATE)).toFixed(2)
     }
     useEffect(() => {
         if (!userInfo) {
@@ -51,12 +57,18 @@ const OrderScreen = ({match, history}) => {
             }
             document.body.appendChild(script)
         }
+        
         if (!order || successPay || successDeliver) {
-       
+            //update user total point by adding new pay order earnPoint
+            if (successPay) {
+                userInfo.totalPoint = userInfo.totalPoint + order.earnPoint - order.applyPoint
+                dispatch(updateUser(userInfo))
+            }
+        dispatch(cartReset()) 
         dispatch({ type: ORDER_PAY_RESET})
         dispatch({ type: ORDER_DELIVER_RESET})
+        dispatch({ type: ORDER_CREATE_RESET})
         dispatch(getOrderDetails(orderId))
-        
         } else if (!order.isPaid) {
             if (!window.paypal) {
                 addPayPalScript()
@@ -76,7 +88,7 @@ const OrderScreen = ({match, history}) => {
     }
 
     return loading? <Loader /> : error? <Message variant='danger'>{error}</Message>
-        : <>
+        : !order?<Message variant='danger'>{'Logging off ...'}</Message> : <>
         <h1>Order {order._id}</h1>
         <Row>
                 <Col md={8}>
@@ -156,6 +168,24 @@ const OrderScreen = ({match, history}) => {
                                                                 <Row>
                                                                     <Col>Items</Col>
                                                                     <Col>${order.itemsPrice}</Col>
+                                                                </Row>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item>
+                                                                <Row>
+                                                                    <Col>Apply My Point</Col>
+                                                                    <Col>- ${Number(order.applyPoint * POINT_DOLLAR_RATE).toFixed(2)}</Col>
+                                                                </Row>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item>
+                                                                <Row>
+                                                                    <Col>Promo Amount</Col>
+                                                                    <Col>- ${order.promoAmount}</Col>
+                                                                </Row>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item>
+                                                                <Row>
+                                                                    <Col>Item Sub Total</Col>
+                                                                    <Col>${order.itemSubTotal}</Col>
                                                                 </Row>
                                                             </ListGroup.Item>
                                                             <ListGroup.Item>

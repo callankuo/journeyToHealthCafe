@@ -11,12 +11,16 @@ const addOrderItems = asyncHandler(async (req,res) => {
         shippingAddress,
         paymentMethod,
         itemsPrice,
+        earnPoint,
         taxPrice,
         shippingPrice,
-        totalPrice
+        totalPrice,
+        promoCode,
+        promoAmount,
+        applyPoint
 
     } = req.body
-
+    console.log('earnPoint='+earnPoint)
     if (orderItems && orderItems.length === 0) {
         res.status(400)
         throw new Error('No order items')
@@ -29,9 +33,13 @@ const addOrderItems = asyncHandler(async (req,res) => {
             shippingAddress,
             paymentMethod,
             itemsPrice,
+            earnPoint,
             taxPrice,
             shippingPrice,
-            totalPrice
+            totalPrice,
+            promoCode,
+            promoAmount,
+            applyPoint
         })
         console.log('orderItems size is '+ orderItems.length)
         const createdOrder = await order.save()

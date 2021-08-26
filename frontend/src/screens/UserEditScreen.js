@@ -7,13 +7,15 @@ import Message from '../components/Message'
 import { getUserDetails, updateUser } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
 import { USER_UPDATE_RESET } from '../constants/userConstants'
-
+import MaskedInput from 'react-text-mask'
 const UserEditScreen = ({match, history}) => {
 
     const userId = match.params.id
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [totalPoint, setTotalPoint] = useState(0)
     const [isAdmin, setIsAdmin] = useState(false)
 
     const dispatch = useDispatch()
@@ -39,6 +41,8 @@ const UserEditScreen = ({match, history}) => {
                 setName(user.name)
                 setEmail(user.email)
                 setIsAdmin(user.isAdmin)
+                setPhone(user.phone)
+                setTotalPoint(user.totalPoint)
             }
         }
        
@@ -47,7 +51,7 @@ const UserEditScreen = ({match, history}) => {
     
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(updateUser({ _id: userId, name, email, isAdmin}))
+        dispatch(updateUser({ _id: userId, name, email, phone, totalPoint, isAdmin}))
         
     }
     
@@ -81,6 +85,27 @@ const UserEditScreen = ({match, history}) => {
                             onChange={(e) => setEmail(e.target.value)}
                         ></Form.Control>
                     </Form.Group>
+                    <Form.Group controlId='phone'>
+                    <Form.Label>Phone Number</Form.Label>
+                    <MaskedInput
+                        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                        className="form-control"
+                        placeholder="Enter a phone number"
+                        guide={false}
+                        id="my-phone-number"
+                        value={phone}
+                        //onBlur={() => {}}
+                        onChange={(e) => {setPhone(e.target.value)}}
+                    />
+                </Form.Group>
+                <Form.Group controlId='totalPoint'>
+                    <Form.Label>Total Point</Form.Label>
+                    <Form.Control
+                        plaintext readOnly
+                        value={totalPoint}
+                        //onChange={(e) => setTotalPoint(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
                     <Form.Group controlId='isAdmin'>
                         <Form.Check
                             type='checkbox'

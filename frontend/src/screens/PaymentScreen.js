@@ -6,15 +6,18 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { savePaymentMethod } from '../actions/cartActions'
 
 const PaymentScreen = ({ history }) => {
-
+    
+   
+    
     const cart = useSelector((state) => state.cart)
-    const { shippingAddress } = cart
+  //const { shippingAddress } = cart
 
-    if (!shippingAddress) {
+   // if (!shippingAddress) {
+    if (!cart.shippingAddress) {
         history.push('/shipping')
     }
-
-    const [paymentMethod, setPaymentMethod] = useState('PayPal') 
+    const [paymentMethod, setPaymentMethod] = useState(cart.paymentMethod?cart.paymentMethod:'PayPal')
+    
     
 
     const dispatch = useDispatch()
@@ -35,18 +38,21 @@ const PaymentScreen = ({ history }) => {
                     <Form.Label as='legend'>Select Method</Form.Label>
                 <Col>
                     <Form.Check type='radio' label='PayPal or Credit Card' 
-                    id='PayPal' name='paymentMethod' value='PayPal' checked
+                    id='PayPal' name='paymentMethod' value='PayPal' 
+                    defaultChecked = {paymentMethod === 'PayPal'}
                     onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
                 
-                    {/*<Form.Check type='radio' label='Stripe' 
-                    id='Stripe' name='paymentMethod' value='Stripe'
+                    <Form.Check type='radio' label='My points' 
+                    id='MyPoints' name='paymentMethod' value='MyPoint'
+                    defaultChecked = {paymentMethod === 'MyPoint'}
                     onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
-                    */}
+                    
                 </Col>
                 </Form.Group>
                 <Button type='submit' variant='primary'>
                     Continue
                 </Button>
+                
             </Form>
         </FormContainer>
     )

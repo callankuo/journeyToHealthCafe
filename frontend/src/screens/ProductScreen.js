@@ -100,7 +100,7 @@ function ProductScreen( {history, match} ) {
                             <Row>
                                 <Col>Point:</Col>
                                 <Col>
-                                    <strong>${product.point}</strong>
+                                    <strong>{product.point}</strong>
                                 </Col>
                             </Row>
                         </ListGroup.Item>

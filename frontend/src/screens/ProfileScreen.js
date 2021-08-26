@@ -7,11 +7,13 @@ import Message from '../components/Message'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
-
+import MaskedInput from 'react-text-mask'
 const ProfileScreen = ({location, history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [totalPoint, setTotalPoint] = useState(0)
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
@@ -41,6 +43,8 @@ const ProfileScreen = ({location, history}) => {
             } else {
                 setName(user.name)
                 setEmail(user.email)
+                setPhone(user.phone)
+                setTotalPoint(user.totalPoint)
             }
         }
     }, [dispatch, history, userInfo, user, success] )
@@ -51,7 +55,7 @@ const ProfileScreen = ({location, history}) => {
             setMessage('Passwords do not match')
         } else {
             dispatch(updateUserProfile({
-                id: user._id, name, email, password
+                id: user._id, name, email, phone, totalPoint, password
             }))
         }
         
@@ -83,6 +87,28 @@ const ProfileScreen = ({location, history}) => {
                         placeholder='Enter email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId='phone'>
+                <Form.Label>Phone Number</Form.Label>
+                <MaskedInput
+                        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                        className="form-control"
+                        placeholder="Enter a phone number"
+                        guide={false}
+                        id="my-phone-number"
+                        value={phone}
+                        //onBlur={() => {}}
+                        onChange={(e) => {setPhone(e.target.value)}}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId='totalPoint'>
+                    <Form.Label>Total Point</Form.Label>
+                    <Form.Control
+                        plaintext readOnly
+                        value={totalPoint}
+                        //onChange={(e) => setTotalPoint(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
                 <Form.Group controlId='password'>
@@ -118,7 +144,8 @@ const ProfileScreen = ({location, history}) => {
                             <tr>
                                 <th>ID</th>
                                 <th>DATE</th>
-                                <th>TOTAL</th>
+                                <th>TOTAL PRICE</th>
+                                <th>EARN POINT</th>
                                 <th>PAID</th>
                                 <th>DELIVERED</th>
                                 <th></th>
@@ -131,6 +158,7 @@ const ProfileScreen = ({location, history}) => {
                                     <td>{order._id}</td>
                                     <td>{order.createdAt.substring(0,10)}</td>
                                     <td>{order.totalPrice}</td>
+                                    <td>{order.earnPoint}</td>
                                     <td>{order.isPaid ? (order.paidAt.substring(0,10)) : (
                                         <i class='fas fa-times' style={{color: 'red'}}></i>
                                     )}</td>

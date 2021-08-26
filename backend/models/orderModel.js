@@ -77,10 +77,31 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 0.0
         },
+        promoCode: {
+            type: String,
+            required: true,
+            default: 'NA'
+        },
+        promoAmount: {
+            type: Number,
+            required: true,
+            default: 0.0
+        },
+        applyPoint: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+
         totalPrice: {
             type: Number,
             required: true,
             default: 0.0
+        },
+        earnPoint: {
+            type: Number,
+            required: true,
+            default: 0
         },
         isPaid: {
             type: Boolean,

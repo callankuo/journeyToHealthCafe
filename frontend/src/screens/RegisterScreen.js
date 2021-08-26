@@ -6,11 +6,14 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { register } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
-
+import { REGISTER_EARN_POINT } from '../constants/configConstants'
+import MaskedInput from 'react-text-mask'
 const RegisterScreen = ({location, history}) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const totalPoint = REGISTER_EARN_POINT
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
@@ -32,7 +35,8 @@ const RegisterScreen = ({location, history}) => {
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            dispatch(register(name, email, password))
+            dispatch(register(name, email, phone, totalPoint, password))
+            
         }
         
 
@@ -61,6 +65,26 @@ const RegisterScreen = ({location, history}) => {
                         placeholder='Enter email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
+                <Form.Group controlId='phone'>
+                <Form.Label>Phone Number</Form.Label>
+                <MaskedInput
+                        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                        className="form-control"
+                        placeholder="Enter a phone number"
+                        guide={false}
+                        id="my-phone-number"
+                        //onBlur={() => {}}
+                        onChange={(e) => {setPhone(e.target.value)}}
+                    />
+                </Form.Group>
+                <Form.Group controlId='totalPoint'>
+                    <Form.Label>Total Point</Form.Label>
+                    <Form.Control
+                        plaintext readOnly
+                        value={totalPoint}
+                        //onChange={(e) => setTotalPoint(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
                 <Form.Group controlId='password'>

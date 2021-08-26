@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Card, ListGroup, Row, Col, Image, Button, Form} from 'react-bootstrap'
 import Message from '../components/Message'
 import {addToCart, removeFromCart} from '../actions/cartActions'
+//import { ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 function CartScreen({ match, location, history}) {
     const productId = match.params.id
@@ -23,6 +24,7 @@ function CartScreen({ match, location, history}) {
     }
 
     const checkoutHandler = () => {
+       // dispatch({ type: ORDER_DETAILS_RESET})
         history.push('/login?redirect=shipping')
     }
     return (
@@ -43,6 +45,7 @@ function CartScreen({ match, location, history}) {
                                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                                 </Col>
                                 <Col md={2}>${item.price} </Col>
+                                <Col md={2}>P{item.point} </Col>
                                 <Col md={2}>
                                 <Form.Control
                                             as= 'select'
@@ -60,7 +63,7 @@ function CartScreen({ match, location, history}) {
                                             ))}
                                         </Form.Control>
                                 </Col>
-                                <Col md={2}>
+                                <Col md={1}>
                                     <Button 
                                         type='button'
                                         variant='light'
@@ -90,7 +93,10 @@ function CartScreen({ match, location, history}) {
                                     items</h2>
                                 ${
                                     cartItems.reduce((acc,item) => acc + item.qty * item.price,0).toFixed(2)
-                                }
+                                } {' '}
+                                Or {
+                                    cartItems.reduce((acc,item) => acc + item.qty * item.point,0)
+                                } points
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Button

@@ -17,6 +17,8 @@ const authUser = asyncHandler(async (req,res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            totalPoint: user.totalPoint,
             isAdmin: user.isAdmin,
             token: generateToken(user._id),
         })
@@ -38,6 +40,8 @@ const getUserProfile = asyncHandler(async (req,res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            totalPoint: user.totalPoint,
             isAdmin: user.isAdmin,
         })
     } else {
@@ -66,6 +70,8 @@ const updateUserProfile = asyncHandler(async (req,res) => {
 
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
+        user.phone = req.body.phone || user.phone
+        user.totalPoint = req.body.totalPoint || user.totalPoint
 
         if (req.body.password) {
             user.password = req.body.password
@@ -76,6 +82,8 @@ const updateUserProfile = asyncHandler(async (req,res) => {
             _id: updateUser._id,
             name: updateUser.name,
             email: updateUser.email,
+            phone: updateUser.phone,
+            totalPoint: updateUser.totalPoint,
             isAdmin: updateUser.isAdmin,
             token: generateToken(updateUser._id),
         })
@@ -91,7 +99,7 @@ const updateUserProfile = asyncHandler(async (req,res) => {
 // @access public
 const registerUser = asyncHandler(async (req,res) => {
     
-    const { name, email, password } = req.body
+    const { name, email, phone, totalPoint, password } = req.body
     
     const userExists = await User.findOne({email})
 
@@ -102,7 +110,7 @@ const registerUser = asyncHandler(async (req,res) => {
     }
 
     const user = await User.create(
-        { name, email, password }
+        { name, email, phone, totalPoint, password }
     )
 
     if (user) {
@@ -110,6 +118,8 @@ const registerUser = asyncHandler(async (req,res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
+            totalPoint : user.totalPoint,
             isAdmin: user.isAdmin,
             token: generateToken(user._id),
         })
@@ -164,13 +174,16 @@ const updateUser = asyncHandler(async (req,res) => {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
         user.isAdmin = req.body.isAdmin || user.isAdmin
-
+        user.phone = req.body.phone || user.phone
+        user.totalPoint = req.body.totalPoint || user.totalPoint
         const updateUser = await user.save()
 
         res.json({
             _id: updateUser._id,
             name: updateUser.name,
             email: updateUser.email,
+            phone: updateUser.phone,
+            totalPoint: updateUser.totalPoint,
             isAdmin: updateUser.isAdmin,
         })
     } else {
