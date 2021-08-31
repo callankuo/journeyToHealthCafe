@@ -17,7 +17,7 @@ const Header = () => {
 
     return (
         <header>
-    <Navbar bg='light' variant="light" expand="lg" collapseOnSelect>
+    <Navbar bg='success' variant="dark" expand="lg" collapseOnSelect>
   <Container>
     <LinkContainer to='/'>
     <Navbar.Brand>
@@ -31,6 +31,7 @@ const Header = () => {
     </Navbar.Brand>
     </LinkContainer>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
     <Navbar.Collapse id="basic-navbar-nav">
       <Route render={ ({history}) => <SearchBox history={history} /> } />
       <Nav className="ms-auto">
@@ -61,6 +62,9 @@ const Header = () => {
           </LinkContainer>
           <LinkContainer to='/admin/orderlist'>
             <NavDropdown.Item>Orders</NavDropdown.Item>
+          </LinkContainer>
+          <LinkContainer to='/admin/generateQRCode'>
+            <NavDropdown.Item>QRCode</NavDropdown.Item>
           </LinkContainer>
             
         </NavDropdown>

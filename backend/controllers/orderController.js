@@ -17,7 +17,10 @@ const addOrderItems = asyncHandler(async (req,res) => {
         totalPrice,
         promoCode,
         promoAmount,
-        applyPoint
+        applyPoint,
+        deliveryMethod,
+        table,
+        pickupPerson
 
     } = req.body
     console.log('earnPoint='+earnPoint)
@@ -39,7 +42,10 @@ const addOrderItems = asyncHandler(async (req,res) => {
             totalPrice,
             promoCode,
             promoAmount,
-            applyPoint
+            applyPoint,
+            deliveryMethod,
+            table,
+            pickupPerson
         })
         console.log('orderItems size is '+ orderItems.length)
         const createdOrder = await order.save()

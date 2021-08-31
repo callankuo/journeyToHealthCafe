@@ -18,6 +18,8 @@ const ProductCarousel = () => {
 
     return loading ? <Loader />: error? <Message variant='danger'>{error}
     </Message> : (
+        <>
+         <h3>Top rated products of the month</h3>
         <Carousel pause='hover' className='color-carousel'>
             {products.map(product => (
                 <Carousel.Item key={product._id}>
@@ -31,6 +33,7 @@ const ProductCarousel = () => {
                 </Carousel.Item>
             ))}
         </Carousel>
+        </>
     )
     
 }

@@ -62,12 +62,16 @@ const PlaceOrderScreen = ({history}) => {
             itemsPrice: cart.itemsPrice,
             earnPoint: Math.round(cart.itemSubTotal * ORDER_EARN_POINT),
             shippingPrice: cart.shippingPrice,
-            //need to rework
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
             applyPoint: applyPoint,
             promoCode: promo? PROMO_CODE : 'NA',
-            promoAmount: promoAmount
+            promoAmount: promoAmount,
+            //delivery method deconstruction
+            deliveryMethod: cart.deliveryMethod.method?cart.deliveryMethod.method : 'NA' ,
+            table: cart.deliveryMethod.method === 'dineIn' ? cart.deliveryMethod.agent : 'NA',
+            pickupPerson: cart.deliveryMethod.method === 'pickup' ? cart.deliveryMethod.agent : 'NA'
+
         }))
     }
 
@@ -101,7 +105,24 @@ const PlaceOrderScreen = ({history}) => {
                 <Col md={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
+                            <h2>Delivery Method</h2>
+                            {cart.deliveryMethod.method === 'dineIn' && (
+                                <p>
+                                <strong>Dine In at Table: {cart.deliveryMethod.agent} </strong>
+                                
+                                </p>
+                            )}
+                            {cart.deliveryMethod.method === 'pickup' && (
+                                <p>
+                                <strong>Pick up person name: {cart.deliveryMethod.agent} </strong>
+                                
+                                </p>
+                            )}
+
+                            {cart.deliveryMethod.method === 'delivery' && (
+                               
+                            
+
                             <p>
                                 <strong>Address: </strong>
                                 {cart.shippingAddress.address},{' '}
@@ -110,6 +131,7 @@ const PlaceOrderScreen = ({history}) => {
                                 {cart.shippingAddress.postalCode},{' '}
                                 {cart.shippingAddress.country} 
                             </p>
+                            )}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
@@ -131,7 +153,7 @@ const PlaceOrderScreen = ({history}) => {
                                                     <Image src={item.image} alt={item.name}
                                                     fluid rounded />
                                                 </Col>
-                                                <Col>
+                                                <Col md={7}>
                                                     <Link to= {`/product/${item.product}`}>
                                                         {item.name}
                                                     </Link>
@@ -140,6 +162,13 @@ const PlaceOrderScreen = ({history}) => {
                                                     {item.qty} x ${item.price} = ${item.qty * item.price}
                                                 </Col>
                                                 
+                                            </Row>
+                                            <Row>
+                                            <Col md={3}><p>Special Request:</p></Col>
+                                    <Col md={9}>
+                                        {item.specialReq}
+                                    </Col>
+
                                             </Row>
                                         </ListGroup.Item>
                                     ))}

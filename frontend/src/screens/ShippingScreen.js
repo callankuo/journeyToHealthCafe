@@ -3,12 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import {Form, Button} from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
-import { saveShippingAddress } from '../actions/cartActions'
+import { saveShippingAddress, saveDeliverytMethod} from '../actions/cartActions'
+import { STORE_ADDRESS, STORE_CITY, STORE_STATE, STORE_POSTALCODE, STORE_COUNTRY} from '../constants/configConstants'
+
 
 const ShippingScreen = ({ history }) => {
 
     const cart = useSelector(state => state.cart)
-    const { shippingAddress } = cart
+    const { shippingAddress, deliveryMethod } = cart
+
+    const [table, setTable] = useState(deliveryMethod && deliveryMethod.method === 'dineIn' ? deliveryMethod.agent:'')
+    const [pickupName, setPickupName] = useState('')
 
     const [address, setAddress] = useState(shippingAddress? shippingAddress.address :'') 
     const [city, setCity] = useState(shippingAddress? shippingAddress.city : '') 
@@ -21,15 +26,56 @@ const ShippingScreen = ({ history }) => {
     const submitHandler = (e) => {
 
         e.preventDefault()
-        dispatch(saveShippingAddress({address, city, state, postalCode, country}))
+        if (deliveryMethod.method === 'delivery') {
+            dispatch(saveShippingAddress({address, city, state, postalCode, country}))
+        } else if (deliveryMethod.method === 'dineIn') {
+            const deliveryMethod =  {method: 'dineIn', agent: table}
+            dispatch(saveDeliverytMethod(deliveryMethod))
+            dispatch(saveShippingAddress({address: STORE_ADDRESS, city: STORE_CITY, state: STORE_STATE, postalCode: STORE_POSTALCODE, country: STORE_COUNTRY}))
+        } else {
+            const deliveryMethod =  {method: 'pickup', agent: pickupName}
+            dispatch(saveDeliverytMethod(deliveryMethod))
+            dispatch(saveShippingAddress({address: STORE_ADDRESS, city: STORE_CITY, state: STORE_STATE, postalCode: STORE_POSTALCODE, country: STORE_COUNTRY}))
+        }
         history.push('/payment')
         }
 
     return (
+        
         <FormContainer>
             <CheckoutSteps step1 step2/>
-            <h1>Shipping</h1>
+            <h1>Delivery</h1>
             <Form onSubmit={submitHandler}>
+            { deliveryMethod.method === 'dineIn' && (
+                <>
+                <Form.Group controlId='table'>
+                    <Form.Label>Dine In Table</Form.Label>
+                    <Form.Control
+                        type='text'
+                        placeholder='Enter table'
+                        value={table}
+                        required
+                        onChange={(e) => setTable(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
+                </>
+            )}
+            { deliveryMethod.method === 'pickup' && (
+                <>
+                <Form.Group controlId='pickupName'>
+                    <Form.Label>Pickup Person Name</Form.Label>
+                    <Form.Control
+                        type='text'
+                        placeholder='Enter Pickup Person Name'
+                        value={pickupName}
+                        required
+                        onChange={(e) => setPickupName(e.target.value)}
+                    ></Form.Control>
+                </Form.Group>
+                </>
+            )}
+            { deliveryMethod.method === 'delivery' && (
+                <>
                 <Form.Group controlId='address'>
                     <Form.Label>Address</Form.Label>
                     <Form.Control
@@ -80,11 +126,14 @@ const ShippingScreen = ({ history }) => {
                         onChange={(e) => setCountry(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
-                <Button type='submit' variant='primary'>
+                </>
+            )}
+            <Button type='submit' variant='primary'>
                     Continue
-                </Button>
+            </Button>
             </Form>
         </FormContainer>
+        
     )
 }
 

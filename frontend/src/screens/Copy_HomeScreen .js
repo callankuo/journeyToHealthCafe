@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Meta from '../components/Meta'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+
 //import products from '../products'
-import {LinkContainer} from 'react-router-bootstrap'
-import {Container, Navbar, Nav, Row, Col} from 'react-bootstrap'
+import {Button, Row, Col} from 'react-bootstrap'
 import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
@@ -49,60 +49,19 @@ const HomeScreen = ({match}) => {
         <>
         <Meta />
         {!keyword && !category ? (<ProductCarousel/>) :(
-            <Link to='/' className='btn btn-success'>
+            <Link to='/' className='btn btn-light'>
                 Go Back
             </Link>
         ) }
-       
-        <h3>Journey To Good Health Menu</h3>
-            <Navbar bg='success' variant="light" expand="lg" collapseOnSelect>
-            <Container>
-            <LinkContainer to='/'>
-                <Navbar.Brand>
-                    <img
-                    src="/images/journeycafe.png"
-                    width="140"
-                    height="60"
-                    className="d-inline-block align-top"
-                    alt="Journey Cafe"
-                    />
-                </Navbar.Brand>
-            </LinkContainer>
-            <Nav variant='tabs'>
-                <LinkContainer to='/category/Appetizer'>
-                    <Nav.Link>
-                      Appetizer
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Side'>
-                    <Nav.Link>
-                      Side
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Salad'>
-                    <Nav.Link>
-                      Salad
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Entree'>
-                    <Nav.Link>
-                      Entree
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Collard Green Wrapnics'>
-                    <Nav.Link>
-                    Collard Green Wrapnics
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Beverage'>
-                    <Nav.Link>
-                      Beverage
-                    </Nav.Link>
-                </LinkContainer>
-            </Nav>
-            </Container>
-            </Navbar>
+            <h3>Journey To Good Health Menu</h3>
         
+            <Button variant="outline-primary" href='/category/Appetizer' active={category === 'Appetizer'}>Appetizer</Button>{' '}
+        
+            <Button variant="outline-secondary" href='/category/Side' active={category === 'Side'}>Side</Button>{' '}
+            <Button variant="outline-success"  href='/category/Salad' active={category === 'Salad'}>Salad</Button>{' '}
+            <Button variant="outline-warning"  href='/category/Entree' active={category === 'Entree'}>Entree</Button>{' '}
+            <Button variant="outline-danger"  href='/category/Collard Green Wrapnics' active={category === 'Collard Green Wrapnics'}>Collard Green Wrapnics</Button>{' '}
+            <Button variant="outline-info" href='/category/Beverage' active={category === 'Beverage'}>Beverage</Button>
             {loading ? (<Loader />)
             : error ? (<Message variant='danger'>{error}</Message>)
             : (

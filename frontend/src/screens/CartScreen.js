@@ -1,23 +1,28 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Card, ListGroup, Row, Col, Image, Button, Form} from 'react-bootstrap'
 import Message from '../components/Message'
 import {addToCart, removeFromCart} from '../actions/cartActions'
+import queryString from 'query-string';
 //import { ORDER_DETAILS_RESET } from '../constants/orderConstants'
 
 function CartScreen({ match, location, history}) {
+    
+    const qValue=queryString.parse(location.search);
+
+    const specialReq = qValue? qValue.specialReq : ''
     const productId = match.params.id
-    const qty = location.search ? Number(location.search.split('=')[1]) : 1
+    const qty = qValue? Number(qValue.qty) : 1
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
     const { cartItems } = cart 
 
     useEffect(() => {
         if (productId) {
-            dispatch(addToCart(productId,qty))
+            dispatch(addToCart(productId, qty,specialReq))
         }
-    }, [dispatch, productId, qty])
+    }, [dispatch, productId, qty, specialReq])
     
     const removeFromCartHandler = (id) => {
         dispatch(removeFromCart(id))
@@ -31,11 +36,11 @@ function CartScreen({ match, location, history}) {
         <Row>
             <Col md={8}>
                 <h1>Shopping cart</h1>
-                { cartItems.length === 0 ? <Message>Your Shopping Cart is empty
+                {!cartItems || cartItems.length === 0 ? <Message>Your Shopping Cart is empty
                       <Link to='/'> Go Back</Link>
                 </Message> : ( 
                 <ListGroup variant='flush'>
-                    {cartItems.map(item => (
+                    {cartItems.map((item) => (
                         <ListGroup.Item key={item.product}>
                             <Row>
                                 <Col md={2}>
@@ -50,9 +55,11 @@ function CartScreen({ match, location, history}) {
                                 <Form.Control
                                             as= 'select'
                                             value = {item.qty}
-                                            onChange = {
-                                                (e) => dispatch(addToCart(item.product,Number(e.target.value)))
-                                            }
+                                            onChange={(e) =>
+                                                dispatch(
+                                                  addToCart(item.product, Number(e.target.value),item.specialReq)
+                                                )
+                                              }
                                         >
                                         {[...Array(item.countInStock).keys()].map(
                                             (x) => (
@@ -72,6 +79,19 @@ function CartScreen({ match, location, history}) {
                                         <i class='fas fa-trash'></i>
                                     </Button>
                                 </Col>
+                            </Row>
+                            <Row>
+                            
+                                    <Col md={2}><p>Special Request</p></Col>
+                                    <Col md={10}>
+                                    <Form.Control as='textarea' row='2' value={item.specialReq}
+                                    onChange={(e) =>
+                                        dispatch(
+                                          addToCart(item.product, item.qty, e.target.value)
+                                        )
+                                      }></Form.Control>
+                                    </Col>
+                            
                             </Row>
                         </ListGroup.Item>
                     )

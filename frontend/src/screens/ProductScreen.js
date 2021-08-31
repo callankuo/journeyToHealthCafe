@@ -11,6 +11,7 @@ import Meta from '../components/Meta'
 function ProductScreen( {history, match} ) {
     
     const [qty, setQty] = useState(1)
+    const [specialReq, setSpecialReq] = useState('')
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
 
@@ -37,7 +38,7 @@ function ProductScreen( {history, match} ) {
     )
     
     const addToCartHandler = () => {
-        history.push(`/cart/${match.params.id}?qty=${qty}`)
+        history.push(`/cart/${match.params.id}?qty=${qty}&specialReq=${specialReq}`)
     }
 
     const submitHandler = (e) => {
@@ -137,7 +138,17 @@ function ProductScreen( {history, match} ) {
                                 </Row>
                             </ListGroup.Item>
                         )}
-
+                        <ListGroup.Item>
+                            <Row>
+                                <Col>Special Req</Col>
+                            </Row>
+                            <Row>
+                            <Form.Control as='textarea' row='3' value={specialReq}
+                                onChange = {
+                                        (e) => setSpecialReq(e.target.value)
+                                }></Form.Control>
+                            </Row>
+                        </ListGroup.Item>
                         <ListGroup.Item>
                             <Button 
                             onClick={addToCartHandler}

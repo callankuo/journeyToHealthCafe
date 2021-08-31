@@ -18,6 +18,9 @@ const orderSchema = mongoose.Schema(
                 required: true,
                 default: 0
             },
+            specialReq: {
+                type: String,
+            },
             image: {
                 type: String,
                 required: true
@@ -34,6 +37,21 @@ const orderSchema = mongoose.Schema(
             }
             
         } ],
+        table: {
+            type: String,
+            required: true,
+            default: 'NA'
+        },
+        pickupPerson: {
+            type: String,
+            required: true,
+            default: 'NA'
+        },
+        deliveryMethod: {
+            type: String,
+            required: true,
+            default: 'dineIn'
+        },
         shippingAddress: {
             address: {
                 type: String,

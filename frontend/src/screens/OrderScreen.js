@@ -94,13 +94,30 @@ const OrderScreen = ({match, history}) => {
                 <Col md={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
+                            <h2>Delivery Method</h2>
                             <p>
                                 <strong>Name: </strong>{order.user.name}
                             </p>
                             <p> <strong>Email: </strong>
                                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
                             </p>
+                            {order.deliveryMethod === 'dineIn' && (
+                                <p>
+                                <strong>Dine In at Table: {order.table} </strong>
+                                
+                                </p>
+                            )}
+                            {order.deliveryMethod === 'pickup' && (
+                                <p>
+                                <strong>Pick up person name: {order.pickupPerson} </strong>
+                                
+                                </p>
+                            )}
+
+                            {order.deliveryMethod.method === 'delivery' && (
+                               
+                            
+
                             <p>
                                 <strong>Address: </strong>
                                 {order.shippingAddress.address},{' '}
@@ -109,10 +126,7 @@ const OrderScreen = ({match, history}) => {
                                 {order.shippingAddress.postalCode},{' '}
                                 {order.shippingAddress.country} 
                             </p>
-                            {
-                                order.isDelivered?(<Message variant='success'>Delivered at {order.deliveredAt}</Message>)
-                                : (<Message variant='danger'>Not Delivered</Message>)
-                            }
+                            )}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
@@ -149,6 +163,13 @@ const OrderScreen = ({match, history}) => {
                                                     {item.qty} x ${item.price} = ${item.qty * item.price}
                                                 </Col>
                                                 
+                                            </Row>
+                                            <Row>
+                                            <Col md={3}><p>Special Request:</p></Col>
+                                                <Col md={9}>
+                                                    {item.specialReq}
+                                                </Col>
+
                                             </Row>
                                         </ListGroup.Item>
                                     ))}

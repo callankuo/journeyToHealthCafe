@@ -19,20 +19,22 @@ const SearchBox = ({history}) => {
     return (
         <Form onSubmit={submitHandler} >
             <Row sm='10'>
-            <Col sm='8'>
+            
+            <Col sm='8' className='px-0'>
             <Form.Control
                 type='text'
                 name='q'
                 onChange={(e) => setKeyword(e.target.value)}
-                placeholder='Search Products...'
+                placeholder='Search Products'
                 className='mr-sm-2 ml-sm-5'
             ></Form.Control>
             </Col>
-            <Col sm='2'>
-            <Button type='submit' variant='outline-success' className='p-2'>
-                    Search
+            <Col sm='2' className='px-0'>
+            <Button type='submit' variant='link' className='p-3'>
+            <i class="fa fa-search-plus fa-lg" aria-hidden="true"></i>
             </Button>
             </Col>
+            
             </Row>
         </Form>
             
