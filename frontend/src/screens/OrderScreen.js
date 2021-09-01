@@ -11,6 +11,8 @@ import { ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET} from '../cons
 import { POINT_DOLLAR_RATE } from '../constants/configConstants'
 import { cartReset } from '../actions/cartActions'
 import { updateUser } from '../actions/userActions'
+import {OrderToPrintTemplate} from '../components/OrderToPrintTemplate'
+import OrderToPrintComponent from '../components/OrderToPrintComponent'
 const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
 
@@ -52,9 +54,9 @@ const OrderScreen = ({match, history}) => {
             script.type = 'text/javascript'
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
-            script.onload = () => {
+            script.onload = await (() =>  {
                 setSdkReady(true)
-            }
+            })
             document.body.appendChild(script)
         }
         
@@ -238,13 +240,30 @@ const OrderScreen = ({match, history}) => {
                                                                 }
                                                             </ListGroup.Item>                                  
                                                         )}
+
                                                         {loadingDeliver && <Loader />}
                                                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                                            <> { console.log('orderItemslength =' + order.orderItems.length)}
+                                                               {order.orderItems.length > 0 && ( 
+                                                                <ListGroup.Item>
+                                                                    
+                                                                    <OrderToPrintComponent 
+                                                                        orderItems = {order.orderItems}
+                                                                        deliveryMethod = {order.deliveryMethod}
+                                                                        table = {order.table}      
+                                                                        pickupPerson = {order.pickupPerson}  
+                                                                    />
+
+                                                                    
+
+                                                                </ListGroup.Item>
+                                                               )}
                                                             <ListGroup.Item>
                                                                 <Button type='button' className='btn btn-block' onClick={deliverHandler}>
                                                                     Mark As Delivered
                                                                 </Button>
                                                             </ListGroup.Item>
+                                                            </>
                                                         )}
                                                         </ListGroup>
                                                     </Card>
