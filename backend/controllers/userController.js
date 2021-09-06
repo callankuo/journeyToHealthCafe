@@ -110,12 +110,13 @@ const registerUser = asyncHandler(async (req,res) => {
     }
 
     const user = await User.create(
-        { name, email, phone, totalPoint, password }
+        { franchise: process.env.STORE_FRANCHISE_ID, name, email, phone, totalPoint, password }
     )
 
     if (user) {
         res.status(201).json({
             _id: user._id,
+            franchise: user.franchise,
             name: user.name,
             email: user.email,
             phone: user.phone,
