@@ -18,7 +18,7 @@ const OrderToPrintComponent = (props) => {
         table = {props.table}      
         pickupPerson = {props.pickupPerson}  
       />
-      <Button type='button' className='btn btn-block' onClick={handlePrint}>Print order to service desk!</Button>
+      <Button type='button' className='btn btn-block' onClick={handlePrint}>Print Receive</Button>
     </div>
   )
 }

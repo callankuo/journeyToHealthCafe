@@ -18,6 +18,7 @@ import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import QRCodeScreen from './screens/QRCodeScreen'
+import PrinterServerScreen from './screens/PrinterServerScreen'
 const App = () => {
   return (
     <Router>
@@ -26,6 +27,7 @@ const App = () => {
       <Container>
         <Route path='/order/:id' component={OrderScreen} />
         <Route path='/' component={HomeScreen} exact />
+        
         <Route path='/table/:id' component={HomeScreen} exact />
         <Route path='/search/:keyword' component={HomeScreen} exact/>
         <Route path='/category/:category' component={HomeScreen} exact/>
@@ -42,6 +44,7 @@ const App = () => {
         <Route path='/admin/user/:id/edit' component={UserEditScreen} />
         <Route path='/product/:id' component={ProductScreen} />
         <Route path='/admin/generateQRCode' component={QRCodeScreen} />
+        <Route path='/admin/printerserver' component={PrinterServerScreen} />
         <Route path='/admin/productlist' component={ProductListScreen} exact/>
         <Route path='/admin/productlist/:pageNumber' component={ProductListScreen} exact/>
         <Route path='/admin/orderlist' component={OrderListScreen} />

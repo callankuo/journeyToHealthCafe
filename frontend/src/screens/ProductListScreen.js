@@ -11,6 +11,7 @@ import Paginate from '../components/Paginate'
 const ProductListScreen = ({history, match}) => {
 
     const pageNumber = match.params.pageNumber || 1
+    
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
@@ -35,7 +36,7 @@ const ProductListScreen = ({history, match}) => {
         if (successCreate) {
             history.push(`/admin/product/${createdProduct._id}/edit`)
         } else {
-            dispatch(listProducts('',pageNumber))
+            dispatch(listProducts('','',pageNumber))
         }
         
     }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, pageNumber])

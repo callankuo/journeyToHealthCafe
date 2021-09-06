@@ -66,6 +66,9 @@ const Header = () => {
           <LinkContainer to='/admin/generateQRCode'>
             <NavDropdown.Item>QRCode</NavDropdown.Item>
           </LinkContainer>
+          <LinkContainer to='/admin/printerserver'>
+            <NavDropdown.Item>Printer Server</NavDropdown.Item>
+          </LinkContainer>
             
         </NavDropdown>
         )}

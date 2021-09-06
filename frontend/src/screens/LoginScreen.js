@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { login } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
+import { GUEST_ACCOUNT_ID, GUEST_ACCOUNT_PASSWORD, REGISTER_EARN_POINT } from '../constants/configConstants'
 
 const LoginScreen = ({location, history}) => {
 
@@ -29,10 +30,15 @@ const LoginScreen = ({location, history}) => {
         dispatch(login(email,password))
 
     }
+
+    const guestCheckout = () => {
+        dispatch(login(GUEST_ACCOUNT_ID,GUEST_ACCOUNT_PASSWORD))
+
+    }
     
     return (
         <FormContainer>
-            <h1>Sign In</h1>
+            <h1>Sign In</h1><h3 style={{ color: 'green' }}>{' '} to earn <i class="fas fa-coins"></i> <i class="fas fa-coins"></i>{' '} every dollar you spent</h3>
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
             <Form onSubmit={submitHandler}>
@@ -54,16 +60,25 @@ const LoginScreen = ({location, history}) => {
                         onChange={(e) => setPassword(e.target.value)}
                     ></Form.Control>
                 </Form.Group>
-                <Button type='submit' variant='primary'>
+                <Button type='submit' variant='success'>
                     Sign In
                 </Button>
             </Form>
             <Row className='py-3'>
-                <Col>
+                <Col style={{ color: 'red' }}>
                     New customer? {' '}
                     <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                        Register
+                         <i class="far fa-registered"></i>Register Here
                     </Link>
+                    {' '} To earn <i class="fas fa-coins"></i> {' ' + REGISTER_EARN_POINT} points to your Vegan Member account!
+                </Col>
+            </Row>
+            <Row>
+                <Col> Or {' '}
+                    <Button type='button' variant='success' onClick={guestCheckout}>
+                    Guest checkout
+                    </Button> 
+                    {' '} without earning any points
                 </Col>
             </Row>
         </FormContainer>

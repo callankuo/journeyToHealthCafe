@@ -12,7 +12,7 @@ import { PRODUCT_DETAILS_RESET, PRODUCT_UPDATE_RESET } from '../constants/produc
 const ProductEditScreen = ({match, history}) => {
 
     const productId = match.params.id
-
+     
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
     const [point, setPoint] = useState(0)
@@ -38,7 +38,7 @@ const ProductEditScreen = ({match, history}) => {
                 dispatch({ type: PRODUCT_UPDATE_RESET })
                 history.push('/admin/productlist')
             } else {
-                if (!product.name || product._id !== productId){
+                if (!product || product._id !== productId){
                     dispatch(listProductDetails(productId))
                 } else {
                     setName(product.name)

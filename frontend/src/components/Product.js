@@ -15,14 +15,14 @@ function Product( {product}) {
           borderRadius: 55,
           width: '100%',
           
-          height: '20vw'
+          height: '18vw'
         }
       }
     return (
         <Card className="m-10 border-0 shadow" style={styles.card}>
             <Row>
             <Link to={`/product/${product._id}`}>
-            <Card.Img src={product.image} variant='top' style={styles.cardImage} />
+            <Card.Img src={product.image} variant='top' style={styles.cardImage}/>
             </Link>
             </Row>
             <Row>

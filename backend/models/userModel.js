@@ -2,7 +2,13 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
 const userSchema = mongoose.Schema(
-    {
+    {   franchise: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Franchise'
+
+        },
+        
         name: {
             type: String,
             required: true

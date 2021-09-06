@@ -67,6 +67,7 @@ const deleteProduct = asyncHandler(async (req,res) => {
 const createProduct = asyncHandler(async (req,res) => {
     
     const product = new Product({
+        franchise: process.env.STORE_FRANCHISE_ID,
         name: 'Sample name',
         price: 0,
         point: 0,
@@ -78,7 +79,7 @@ const createProduct = asyncHandler(async (req,res) => {
         numReviews: 0,
         description: 'sample description'
     })
-
+    console.log("franchise = "+ process.env.STORE_FRANCHISE_ID)
     const createdProduct = product.save()
     res.status(201).json(product)
 

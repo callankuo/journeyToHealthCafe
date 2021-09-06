@@ -1,13 +1,29 @@
 import React from 'react'
+import { STORE_ADDRESS, STORE_CITY, STORE_NAME, STORE_POSTALCODE, STORE_STATE } from '../constants/configConstants'
 
 export class OrderToPrintTemplate extends React.PureComponent{
+  
   render() {
+    
 
     return (
         <>
+        <table>
+          <thead>
+          <tr>
+            <th width='100%'><center>{STORE_NAME}</center></th>
+          </tr>
+          <tr>
+            <th width='100%'>{STORE_ADDRESS}, {STORE_CITY}, {STORE_STATE + ' ' +STORE_POSTALCODE}</th>
+          </tr>
+          <tr>
+            <th width='100%'><center>Order Date: {new Date().toLocaleString()}</center></th>
+          </tr>
+          </thead>
+        </table>
       
         <table>
-        <thead>
+          <thead>
           <tr>
             <th width='10%'></th>
             <th width='70%'>Delivery: </th>

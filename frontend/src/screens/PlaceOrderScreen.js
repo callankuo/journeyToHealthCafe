@@ -5,7 +5,7 @@ import {Button, Row, Col, ListGroup, Image, Card, Form} from 'react-bootstrap'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder, getOrderDetails } from '../actions/orderActions'
-import { ORDER_EARN_POINT, POINT_DOLLAR_RATE, PROMO_CODE, PROMO_DISCOUNT_RATE} from '../constants/configConstants'
+import { ORDER_EARN_POINT, POINT_DOLLAR_RATE, PROMO_CODE, PROMO_DISCOUNT_RATE, STORE_FRANCHISE_ID} from '../constants/configConstants'
 //import axios from 'axios'
 //import { ORDER_CREATE_RESET} from '../constants/orderConstants'
 //import { cartReset } from '../actions/cartActions'
@@ -56,6 +56,7 @@ const PlaceOrderScreen = ({history}) => {
     const placeOrderHandler = () => {
         
         dispatch(createOrder({
+            franchise: STORE_FRANCHISE_ID,
             orderItems: cart.cartItems,
             shippingAddress: cart.shippingAddress,
             paymentMethod: cart.paymentMethod,
@@ -106,6 +107,9 @@ const PlaceOrderScreen = ({history}) => {
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
                             <h2>Delivery Method</h2>
+                            <p>
+                                <strong>Method: </strong>{cart.deliveryMethod.method}
+                            </p>
                             {cart.deliveryMethod.method === 'dineIn' && (
                                 <p>
                                 <strong>Dine In at Table: {cart.deliveryMethod.agent} </strong>
@@ -124,7 +128,7 @@ const PlaceOrderScreen = ({history}) => {
                             
 
                             <p>
-                                <strong>Address: </strong>
+                                <strong>Delivery To Address: </strong>
                                 {cart.shippingAddress.address},{' '}
                                 {cart.shippingAddress.city},{' '}
                                 {cart.shippingAddress.state},{' '}

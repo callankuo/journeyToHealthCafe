@@ -1,11 +1,19 @@
 // point system
-export const STORE_ADDRESS = 'Store street'
-export const STORE_CITY = 'Store City'
-export const STORE_STATE = 'Store State'
-export const STORE_POSTALCODE = 'Store Postcal Code'
+export const STORE_FRANCHISE_ID = "613645948dfe5c27ebc548ee"
+export const STORE_NAME = "Journet To Good Health Cafe"
+export const STORE_ADDRESS = '17723 Contra Costa Dr'
+export const STORE_CITY = 'Rowland Heights'
+export const STORE_STATE = 'CA'
+export const STORE_POSTALCODE = '91748'
 export const STORE_COUNTRY = 'US'
 export const POINT_DOLLAR_RATE = 0.1
-export const REGISTER_EARN_POINT = 10
+export const REGISTER_EARN_POINT = 50
 export const ORDER_EARN_POINT = 0.5
 export const PROMO_CODE = 'gopen'
 export const PROMO_DISCOUNT_RATE = 0.5
+export const PRINTER_DRIVER_PATH = '/epos-2.18.0.js'
+export const PRINTER_ID = 'HP LaserJet 200 color M251nw (092D92)'
+export const PRINTER_IP_ADDRESS = '192.168.192.168'
+export const PRINTER_PORT = '8008'
+export const GUEST_ACCOUNT_ID = 'guest4@yahoo.com'
+export const GUEST_ACCOUNT_PASSWORD = '123456'

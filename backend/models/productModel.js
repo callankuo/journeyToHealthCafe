@@ -27,7 +27,12 @@ const reviewSchema = mongoose.Schema(
 )
 
 const productSchema = mongoose.Schema(
-    {
+    {   franchise: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Franchise'
+
+        },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,

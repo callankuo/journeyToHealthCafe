@@ -1,7 +1,12 @@
 import mongoose from 'mongoose'
 
 const orderSchema = mongoose.Schema(
-    {
+    {   franchise: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Franchise'
+
+    },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,

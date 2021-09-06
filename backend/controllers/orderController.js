@@ -7,6 +7,7 @@ import asyncHandler from 'express-async-handler'
 const addOrderItems = asyncHandler(async (req,res) => {
     
     const {
+        franchise,
         orderItems,
         shippingAddress,
         paymentMethod,
@@ -31,6 +32,7 @@ const addOrderItems = asyncHandler(async (req,res) => {
     } else {
         const order = new Order({
             createdAt: Date.now(),
+            franchise,
             orderItems,
             user: req.user._id,
             shippingAddress,

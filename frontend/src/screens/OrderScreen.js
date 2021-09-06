@@ -54,9 +54,10 @@ const OrderScreen = ({match, history}) => {
             script.type = 'text/javascript'
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
-            script.onload = await (() =>  {
-                setSdkReady(true)
-            })
+            setSdkReady(true)
+            //script.onload = () =>  {
+                //setSdkReady(true)
+            //}
             document.body.appendChild(script)
         }
         
@@ -98,6 +99,9 @@ const OrderScreen = ({match, history}) => {
                         <ListGroup.Item>
                             <h2>Delivery Method</h2>
                             <p>
+                                <strong>Method: </strong>{order.deliveryMethod}
+                            </p>
+                            <p>
                                 <strong>Name: </strong>{order.user.name}
                             </p>
                             <p> <strong>Email: </strong>
@@ -116,12 +120,12 @@ const OrderScreen = ({match, history}) => {
                                 </p>
                             )}
 
-                            {order.deliveryMethod.method === 'delivery' && (
+                            {order.deliveryMethod === 'delivery' && (
                                
                             
 
                             <p>
-                                <strong>Address: </strong>
+                                <strong>Delivery To Address: </strong>
                                 {order.shippingAddress.address},{' '}
                                 {order.shippingAddress.city},{' '}
                                 {order.shippingAddress.state},{' '}
@@ -129,6 +133,13 @@ const OrderScreen = ({match, history}) => {
                                 {order.shippingAddress.country} 
                             </p>
                             )}
+                        {order.isDelivered ? (
+                                <Message variant='success'>
+                                    Delivered on {order.deliveredAt}
+                                </Message>
+                        ) : (
+                                <Message variant='danger'>Not Delivered</Message>
+                        )}
                         </ListGroup.Item>
 
                         <ListGroup.Item>

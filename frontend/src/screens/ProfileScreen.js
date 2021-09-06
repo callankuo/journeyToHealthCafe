@@ -47,7 +47,7 @@ const ProfileScreen = ({location, history}) => {
                 setTotalPoint(user.totalPoint)
             }
         }
-    }, [dispatch, history, userInfo, user, success] )
+    }, [dispatch, history, userInfo, user, orders, success] )
     
     const submitHandler = (e) => {
         e.preventDefault()
