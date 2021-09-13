@@ -200,7 +200,7 @@ const OrderScreen = ({match, history}) => {
                                                             </ListGroup.Item>
                                                             <ListGroup.Item>
                                                                 <Row>
-                                                                    <Col>Items</Col>
+                                                                    <Col>Items Price</Col>
                                                                     <Col>${order.itemsPrice}</Col>
                                                                 </Row>
                                                             </ListGroup.Item>
@@ -236,6 +236,12 @@ const OrderScreen = ({match, history}) => {
                                                             </ListGroup.Item>
                                                             <ListGroup.Item>
                                                                 <Row>
+                                                                    <Col>Tip Amount</Col>
+                                                                    <Col>${order.tipPrice}</Col>
+                                                                </Row>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item>
+                                                                <Row>
                                                                     <Col>Total</Col>
                                                                     <Col>${order.totalPrice}</Col>
                                                                 </Row>
@@ -259,10 +265,7 @@ const OrderScreen = ({match, history}) => {
                                                                 <ListGroup.Item>
                                                                     
                                                                     <OrderToPrintComponent 
-                                                                        orderItems = {order.orderItems}
-                                                                        deliveryMethod = {order.deliveryMethod}
-                                                                        table = {order.table}      
-                                                                        pickupPerson = {order.pickupPerson}  
+                                                                        order = {order}
                                                                     />
 
                                                                     

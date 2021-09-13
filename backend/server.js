@@ -49,4 +49,15 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
+/* Allow Cross Domain
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}
+
+    app.use(allowCrossDomain);
+    //some other code */
+
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}...`.yellow.bold))

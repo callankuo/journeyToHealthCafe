@@ -9,14 +9,10 @@ const OrderToPrintComponent = (props) => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   })
-    console.log('props '+props.deliveryMethod)
   return (
     <div>
       <OrderToPrintTemplate ref={componentRef} 
-        orderItems = {props.orderItems}
-        deliveryMethod = {props.deliveryMethod}
-        table = {props.table}      
-        pickupPerson = {props.pickupPerson}  
+        order = {props.order}
       />
       <Button type='button' className='btn btn-block' onClick={handlePrint}>Print Receive</Button>
     </div>

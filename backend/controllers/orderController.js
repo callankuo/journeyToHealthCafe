@@ -1,5 +1,6 @@
 import Order from '../models/orderModel.js'
 import asyncHandler from 'express-async-handler'
+import OrderQueue from '../models/orderQueueModel.js'
 
 // @desc create new order
 // @route POST /api/orders
@@ -15,6 +16,7 @@ const addOrderItems = asyncHandler(async (req,res) => {
         earnPoint,
         taxPrice,
         shippingPrice,
+        tipPrice,
         totalPrice,
         promoCode,
         promoAmount,
@@ -41,6 +43,7 @@ const addOrderItems = asyncHandler(async (req,res) => {
             earnPoint,
             taxPrice,
             shippingPrice,
+            tipPrice,
             totalPrice,
             promoCode,
             promoAmount,
@@ -49,8 +52,18 @@ const addOrderItems = asyncHandler(async (req,res) => {
             table,
             pickupPerson
         })
+        //write to orderQueue
+        const orderQueue = new OrderQueue({
+            createdAt: Date.now(),
+            orderItems,
+            shippingAddress,
+            deliveryMethod,
+            table,
+            pickupPerson
+        })
         console.log('orderItems size is '+ orderItems.length)
         const createdOrder = await order.save()
+        const createdOrderQueue = await orderQueue.save()
         res.status(201).json(createdOrder)
     }
     
@@ -148,4 +161,38 @@ const getOrders = asyncHandler(async (req,res) => {
  
  })
 
-export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered}
+ // @desc get login user's orders
+// @route GET /api/orders/orderqueue
+// @access private/admin
+const getOrdersPrint = asyncHandler(async (req,res) => {
+    
+    const ordersPrint = await OrderQueue.find({status: 'N'})
+     
+     res.json(ordersPrint)
+     
+ 
+ })
+
+ // @desc update order print status from 'N' to 'P'
+// @route PUT /api/orders/orderqueue/:id
+// @access private/admin
+const updateOrderPrintStatus = asyncHandler(async (req,res) => {
+    
+    const order = await OrderQueue.findById(req.params.id)
+     
+     if (order) {
+         order.status = 'P'
+         order.printAt = Date.now()
+ 
+         const updateOrder = await order.save()
+         res.json(updateOrder)
+     } else {
+         res.status(404)
+         throw new Error('Order not found')
+     }
+     
+ 
+ })
+
+
+export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered, getOrdersPrint, updateOrderPrintStatus}

@@ -33,11 +33,12 @@ const PlaceOrderScreen = ({history}) => {
     const [applyPoint, setApplyPoint] = useState(0)
     const [promoMessage, setPromoMessage]= useState(false)
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
+    const [tipPrice, setTipPrice] = useState(Number(cart.itemsPrice * 0.2).toFixed(2))
     cart.itemSubTotal = Number(cart.itemsPrice - promoAmount - (applyPoint * POINT_DOLLAR_RATE)).toFixed(2)
-    cart.shippingPrice = addDecimals(cart.itemSubTotal > 100 ? 0 : 5.99)
+    cart.shippingPrice = addDecimals(cart.deliveryMethod === 'delivery' ? 5.99 : 0)
     cart.taxPrice = addDecimals(Number((0.12 * cart.itemSubTotal).toFixed(2)))
     cart.totalPrice = Number(Number(cart.itemSubTotal) + Number(cart.shippingPrice) +
-                        Number(cart.taxPrice)).toFixed(2)
+                        Number(cart.taxPrice) + Number(tipPrice)).toFixed(2)
 
 
     const orderCreate = useSelector(state => state.orderCreate) 
@@ -64,6 +65,7 @@ const PlaceOrderScreen = ({history}) => {
             earnPoint: Math.round(cart.itemSubTotal * ORDER_EARN_POINT),
             shippingPrice: cart.shippingPrice,
             taxPrice: cart.taxPrice,
+            tipPrice: tipPrice,
             totalPrice: cart.totalPrice,
             applyPoint: applyPoint,
             promoCode: promo? PROMO_CODE : 'NA',
@@ -190,7 +192,7 @@ const PlaceOrderScreen = ({history}) => {
                                                             </ListGroup.Item>
                                                             <ListGroup.Item>
                                                                 <Row>
-                                                                    <Col>Items</Col>
+                                                                    <Col>Items Price</Col>
                                                                     <Col>${cart.itemsPrice}</Col>
                                                                 </Row>
                                                             </ListGroup.Item>
@@ -270,6 +272,37 @@ const PlaceOrderScreen = ({history}) => {
                                                                     <Col>Tax</Col>
                                                                     <Col>${cart.taxPrice}</Col>
                                                                 </Row>
+                                                            </ListGroup.Item>
+                                                            <ListGroup.Item>
+                                                                <>
+                                                                <Row>
+                                                                    <Col>Gratitude</Col>
+                                                                    <Col>
+                                                                    <Form.Control
+                                                                            as= 'select'
+                                                                            value = { tipPrice }
+                                                                            onChange = {
+                                                                            (e) => {setTipPrice(e.target.value)}
+                                                                            }
+                                        >                               {/* [15%, 20%, 30%, 40%, 50%, 100%, None] */}
+                                                                        {[Number(cart.itemsPrice * 0.2).toFixed(2),Number(cart.itemsPrice * 0.1).toFixed(2),
+                                                                        Number(cart.itemsPrice * 0.3).toFixed(2), Number(cart.itemsPrice * 0.4).toFixed(2),
+                                                                        Number(cart.itemsPrice * 0.5).toFixed(2), 0.00].map(
+                                                                        (x, index) => (
+                                                                        <option key={index + 1} value={x}>
+                                                                        {index === 0 ? '20%' : index === 1 ? '10%' : index < 5 ? (index+1)*10 + '%' : 'None'}
+                                                                        </option>
+
+                                                                        ))}
+                                                                    </Form.Control>
+                                                                    </Col>
+                                                                </Row> 
+                                                                <Row>
+                                                                    <Col>Tip Amount</Col>
+                                                                    <Col>${tipPrice}</Col>
+                                                                </Row>
+                                                                
+                                                                </>
                                                             </ListGroup.Item>
                                                             <ListGroup.Item>
                                                                 <Row>

@@ -115,6 +115,11 @@ const orderSchema = mongoose.Schema(
             required: true,
             default: 0
         },
+        tipPrice: {
+            type: Number,
+            required: true,
+            default: 0.0
+        },
 
         totalPrice: {
             type: Number,
