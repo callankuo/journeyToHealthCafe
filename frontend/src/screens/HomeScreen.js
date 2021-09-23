@@ -9,7 +9,7 @@ import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
 import Message from '../components/Message'
-import {listProducts} from '../actions/productActions'
+import {listProducts, listTopCategories} from '../actions/productActions'
 import {saveDeliverytMethod} from '../actions/cartActions'
 import ProductCarousel from '../components/ProductCarousel'
 import DeliveryMethodModal from '../components/DeliveryMethodModal'
@@ -26,13 +26,18 @@ const HomeScreen = ({match}) => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart)
     const { deliveryMethod } = cart
-    console.log('deliveryMethod = '+ deliveryMethod)
+    const categoriesTop = useSelector((state) => state.categoriesTop)
+    const {loading: loadingCategories, error: errorCategories, categories } = categoriesTop
+
+   
+        
     const productList = useSelector(state => state.productList)
     const { loading, error, products, page, pages} = productList
 
     const [modalShow, setModalShow] = useState(deliveryMethod && deliveryMethod.method ? false : true);
 
     useEffect( () => {
+        dispatch(listTopCategories())
         dispatch(listProducts(category, keyword, pageNumber))
         
         const table = match.params.id
@@ -54,7 +59,12 @@ const HomeScreen = ({match}) => {
             </Link>
         ) }
        
+       {loadingCategories ? (<Loader />)
+            : errorCategories ? (<Message variant='danger'>{errorCategories}</Message>)
+            : (
+                <>
         <h3>Journey To Good Health Menu</h3>
+                
             <Navbar bg='success' variant="light" expand="lg" collapseOnSelect>
             <Container>
             <LinkContainer to='/'>
@@ -69,40 +79,23 @@ const HomeScreen = ({match}) => {
                 </Navbar.Brand>
             </LinkContainer>
             <Nav variant='tabs'>
-                <LinkContainer to='/category/Appetizer'>
+            {
+                categories.map(category => (
+                
+                <LinkContainer to={`/category/${category.name}`}>
                     <Nav.Link>
-                      Appetizer
+                      {category.name}
                     </Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='/category/Side'>
-                    <Nav.Link>
-                      Side
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Salad'>
-                    <Nav.Link>
-                      Salad
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Entree'>
-                    <Nav.Link>
-                      Entree
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Collard Green Wrapnics'>
-                    <Nav.Link>
-                    Collard Green Wrapnics
-                    </Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/category/Beverage'>
-                    <Nav.Link>
-                      Beverage
-                    </Nav.Link>
-                </LinkContainer>
+                
+                
+                ))}
             </Nav>
             </Container>
             </Navbar>
-        
+                </>
+            )}
+
             {loading ? (<Loader />)
             : error ? (<Message variant='danger'>{error}</Message>)
             : (

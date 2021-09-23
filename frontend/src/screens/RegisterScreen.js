@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import {Row, Col, Button, Form} from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { register } from '../actions/userActions'
+import { register, pointRegister } from '../actions/userActions'
 import FormContainer from '../components/FormContainer'
-import { REGISTER_EARN_POINT } from '../constants/configConstants'
+import { REGISTER_EARN_POINT, STORE_FRANCHISE_ID} from '../constants/configConstants'
 import MaskedInput from 'react-text-mask'
+import { USER_POINT_REGISTER_RESET } from '../constants/userConstants'
 const RegisterScreen = ({location, history}) => {
 
     const [name, setName] = useState('')
@@ -22,13 +23,20 @@ const RegisterScreen = ({location, history}) => {
     const userRegister = useSelector(state => state.userRegister)
     const { loading, error, userInfo} = userRegister
 
+    const userPointRegister = useSelector(state => state.userPointRegister)
+    const { loading: loadingPoint, error: errorPoint, userPointInfo} = userPointRegister
+
 
     const redirect = location.search ? location.search.split('=')[1] : '/'
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && !userPointInfo) {
+            console.log('process point')
+            dispatch(pointRegister(STORE_FRANCHISE_ID, 'grant', userInfo._id, REGISTER_EARN_POINT))
+        } else if (userInfo && userPointInfo) {
+            dispatch({type: USER_POINT_REGISTER_RESET})
             history.push(redirect)
         }
-    }, [history,userInfo, redirect])
+    }, [history, userInfo, userPointInfo, dispatch, redirect])
     
     const submitHandler = (e) => {
         e.preventDefault()

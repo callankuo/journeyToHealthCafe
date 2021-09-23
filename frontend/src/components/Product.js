@@ -8,14 +8,14 @@ function Product( {product}) {
         card: {
           backgroundColor: 'rgb(231, 236, 231)',
           borderRadius: 55,
-          padding: '1rem'
+          padding: '1rem',
         },
         cardImage: {
           objectFit: 'cover',
           borderRadius: 55,
-          width: '100%',
+          width: '230px',
           
-          height: '18vw'
+          height: '200px'
         }
       }
     return (

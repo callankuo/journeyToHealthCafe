@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
-import {productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer, productReviewCreateReducer, productTopRatedReducer} from './reducers/productReducers'
+import {productListReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer, productReviewCreateReducer, productTopRatedReducer, categoriesTopReducer} from './reducers/productReducers'
 import {cartReducer} from './reducers/cartReducers'
-import { userUpdateReducer, userDeleteReducer, userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, userListReducer } from './reducers/userReducers'
-import {orderCreateReducer, orderDetailsReducer, orderPayReducer, orderListMyReducer, orderListReducer, orderDeliverReducer} from './reducers/orderReducers'
+import { userUpdateReducer, userDeleteReducer, userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, userListReducer, userPointRegisterReducer } from './reducers/userReducers'
+import {orderCreateReducer, orderDetailsReducer, orderPayReducer, orderListMyReducer, orderListReducer, orderDeliverReducer, orderPayCashReducer} from './reducers/orderReducers'
 
 const reducer = combineReducers({productList: productListReducer,
     productDetails: productDetailsReducer,
@@ -13,9 +13,11 @@ const reducer = combineReducers({productList: productListReducer,
     productUpdate: productUpdateReducer,
     productReviewCreate: productReviewCreateReducer,
     productTopRated: productTopRatedReducer,
+    categoriesTop: categoriesTopReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    userPointRegister: userPointRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
     userList: userListReducer,
@@ -24,6 +26,7 @@ const reducer = combineReducers({productList: productListReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
+    orderPayCash: orderPayCashReducer,
     orderListMy: orderListMyReducer,
     orderList: orderListReducer,
     orderDeliver: orderDeliverReducer,
@@ -34,6 +37,9 @@ JSON.parse(localStorage.getItem('cartItems')) : []
 
 const userInfoFromStorage = localStorage.getItem('userInfo')?
 JSON.parse(localStorage.getItem('userInfo')) : null
+
+const userPointInfoFromStorage = localStorage.getItem('userPointInfo')?
+JSON.parse(localStorage.getItem('userPointInfo')) : null
 
 const shippingAddressFromStorage = localStorage.getItem('shippingAddress')?
 JSON.parse(localStorage.getItem('shippingAddress')) : {}
@@ -51,6 +57,7 @@ const initialState = {
             deliveryMethod: deliveryMethodFromStorage
     },
     userLogin: {userInfo: userInfoFromStorage},
+    userPointRegister : {userPointInfo: userPointInfoFromStorage}
      
 }
 

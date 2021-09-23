@@ -1,13 +1,14 @@
 import Product from '../models/productModel.js'
 import asyncHandler from 'express-async-handler'
+import Category from '../models/categoryModel.js'
 
 // @desc fetch all products
 // @route /api/products?keyword=...&pageNumber=...
 // @access public
 const getProducts = asyncHandler(async (req,res) => {
-    
+    //console.log('process.env.STORE_FRANCHISE_ID =' + process.env.STORE_FRANCHISE_ID)
     //pagenation control
-    const pageSize = 8
+    const pageSize = 16
     const page = Number(req.query.pageNumber) || 1
     //search keyword
     const keyword = req.query.keyword ? { 
@@ -18,11 +19,11 @@ const getProducts = asyncHandler(async (req,res) => {
     } : {}
     const category = req.query.category? { category: req.query.category} : {}
     var count
-    if (category.category) count = await Product.countDocuments({...category})
-    else count = await Product.countDocuments({...keyword})
+    if (category.category) count = await Product.countDocuments({...category, franchise: process.env.STORE_FRANCHISE_ID})
+    else count = await Product.countDocuments({...keyword, franchise: process.env.STORE_FRANCHISE_ID})
     var products
-    if (category.category) products = await Product.find(category).limit(pageSize).skip(pageSize * (page - 1))
-    else products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1))
+    if (category.category) products = await Product.find({...category, franchise: process.env.STORE_FRANCHISE_ID}).limit(pageSize).skip(pageSize * (page - 1))
+    else products = await Product.find({...keyword, franchise: process.env.STORE_FRANCHISE_ID}).limit(pageSize).skip(pageSize * (page - 1))
     //throw new Error('some error')
     
     res.json({products, page, pages: Math.ceil(count/pageSize)})
@@ -161,8 +162,15 @@ const createProductReview = asyncHandler(async (req,res) => {
 // @route POST /api/products/top
 // @access public
 const getTopProducts = asyncHandler(async (req,res) => {
-    const products = await Product.find({}).sort({rating: -1}).limit(6)
+    const products = await Product.find({franchise: process.env.STORE_FRANCHISE_ID}).sort({rating: -1}).limit(6)
     res.json(products)
 })
 
-export {getProducts, getProductById, deleteProduct, createProduct, updateProduct, createProductReview, getTopProducts}
+// @desc get top categories under franchise
+// @route POST /api/products/topcategories
+// @access public
+const getTopCategories = asyncHandler(async (req,res) => {
+    const categories = await Category.find({parentCategoryId: process.env.STORE_FRANCHISE_ID})
+    res.json(categories)
+})
+export {getTopCategories, getProducts, getProductById, deleteProduct, createProduct, updateProduct, createProductReview, getTopProducts}

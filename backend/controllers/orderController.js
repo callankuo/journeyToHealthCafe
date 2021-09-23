@@ -116,6 +116,34 @@ const updateOrderToPaid = asyncHandler(async (req,res) => {
 
 })
 
+// @desc update cash order to paid
+// @route PUT /api/orders/:id/paycash
+// @access private/admin
+const updateCashOrderToPaid = asyncHandler(async (req,res) => {
+    
+    const order = await Order.findById(req.params.id)
+     
+     if (order) {
+         order.isPaid = true
+         order.paidAt = Date.now()
+         
+         order.paymentResult = {
+             id: req.params.id,
+             status: 'Cash received',
+             update_time: Date.now(),
+             email_address: ''
+         }
+ 
+         const updateOrder = await order.save()
+         res.json(updateOrder)
+     } else {
+         res.status(404)
+         throw new Error('Order not found')
+     }
+     
+ 
+ })
+
 // @desc update order to delivered
 // @route GET /api/orders/:id/deliver
 // @access private/admin
@@ -195,4 +223,4 @@ const updateOrderPrintStatus = asyncHandler(async (req,res) => {
  })
 
 
-export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered, getOrdersPrint, updateOrderPrintStatus}
+export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders, getOrders, updateOrderToDelivered, getOrdersPrint, updateOrderPrintStatus, updateCashOrderToPaid}

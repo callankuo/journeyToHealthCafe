@@ -2,9 +2,11 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import colors from 'colors'
 import users from './data/users.js'
+import category from './data/category.js'
 import products from './data/products.js'
 import franchises from './data/franchises.js'
 import User from './models/userModel.js'
+import Category from './models/categoryModel.js'
 import Product from './models/productModel.js'
 import Order from './models/orderModel.js'
 import connectDB from './config/db.js'
@@ -15,6 +17,17 @@ dotenv.config()
 await connectDB()
 
 const importData = async () => {
+    try {
+        console.log('delete existing category...')
+        await Category.deleteMany()
+        const createCategory = await Category.insertMany(category)
+        console.log('create category completed')
+        process.exit()
+    } catch(error){
+        console.error(`${error}`)
+        process.exit(1)
+    }
+    /*
     try {
         console.log('delete existing data...')
         await Order.deleteMany()
@@ -74,6 +87,7 @@ const importData = async () => {
         process.exit(1)
 
     }
+    */
 
 }
 

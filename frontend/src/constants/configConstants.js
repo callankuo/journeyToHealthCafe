@@ -1,14 +1,14 @@
 // point system
 export const STORE_FRANCHISE_ID = "6136485863932f284ac619f5"
-export const STORE_NAME = "Journet To Good Health Cafe"
+export const STORE_NAME = "Journet To Good Health Cafe California Home"
 export const STORE_ADDRESS = '17723 Contra Costa Dr'
 export const STORE_CITY = 'Rowland Heights'
 export const STORE_STATE = 'CA'
 export const STORE_POSTALCODE = '91748'
 export const STORE_COUNTRY = 'US'
-export const POINT_DOLLAR_RATE = 0.1
-export const REGISTER_EARN_POINT = 50
-export const ORDER_EARN_POINT = 0.5
+export const POINT_DOLLAR_RATE = 0.01
+export const REGISTER_EARN_POINT = 500
+export const ORDER_EARN_POINT = 5
 export const PROMO_CODE = 'gopen'
 export const PROMO_DISCOUNT_RATE = 0.5
 export const PRINTER_DRIVER_PATH = '/epos-2.18.0.js'

@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import {Row, Col, ListGroup, Image, Card, Button} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET} from '../constants/orderConstants'
-import { POINT_DOLLAR_RATE } from '../constants/configConstants'
+import { getOrderDetails, payOrder, payCashOrder, deliverOrder } from '../actions/orderActions'
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET, ORDER_PAY_CASH_RESET} from '../constants/orderConstants'
+import { POINT_DOLLAR_RATE, STORE_FRANCHISE_ID } from '../constants/configConstants'
 import { cartReset } from '../actions/cartActions'
-import { updateUser } from '../actions/userActions'
+import { pointRegister, updateUser } from '../actions/userActions'
 import {OrderToPrintTemplate} from '../components/OrderToPrintTemplate'
 import OrderToPrintComponent from '../components/OrderToPrintComponent'
+import { USER_POINT_REGISTER_RESET } from '../constants/userConstants'
 const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
 
@@ -28,6 +29,9 @@ const OrderScreen = ({match, history}) => {
 
     const orderPay = useSelector(state => state.orderPay) 
     const {loading:loadingPay, success:successPay} = orderPay
+
+    const orderPayCash = useSelector(state => state.orderPayCash) 
+    const {loading:loadingPayCash, success:successPayCash} = orderPayCash
 
     const orderDeliver = useSelector(state => state.orderDeliver) 
     const {loading:loadingDeliver, success:successDeliver} = orderDeliver
@@ -61,16 +65,21 @@ const OrderScreen = ({match, history}) => {
             document.body.appendChild(script)
         }
         
-        if (!order || successPay || successDeliver) {
+        if (!order || successPay ||  successPayCash || successDeliver) {
             //update user total point by adding new pay order earnPoint
-            if (successPay) {
+            if (successPay || successPayCash) {
                 userInfo.totalPoint = userInfo.totalPoint + order.earnPoint - order.applyPoint
                 dispatch(updateUser(userInfo))
+                if (order.earnPoint - order.applyPoint > 0) dispatch(pointRegister(STORE_FRANCHISE_ID, 'grant', userInfo._id, order.earnPoint - order.applyPoint))
+                if (order.earnPoint - order.applyPoint < 0) dispatch(pointRegister(STORE_FRANCHISE_ID, 'redemption', userInfo._id, order.applyPoint - order.earnPoint))
+
             }
         dispatch(cartReset()) 
         dispatch({ type: ORDER_PAY_RESET})
+        dispatch({ type: ORDER_PAY_CASH_RESET})
         dispatch({ type: ORDER_DELIVER_RESET})
         dispatch({ type: ORDER_CREATE_RESET})
+        dispatch({ type: USER_POINT_REGISTER_RESET})
         dispatch(getOrderDetails(orderId))
         } else if (!order.isPaid) {
             if (!window.paypal) {
@@ -79,12 +88,17 @@ const OrderScreen = ({match, history}) => {
                 setSdkReady(true)
             }
         } 
-    }, [dispatch, history, userInfo, orderId, successPay, order, successDeliver])
+    }, [dispatch, history, userInfo, orderId, successPay, successPayCash, order, successDeliver])
 
     const successPaymentHandler = (paymentResult) => {
         console.log(paymentResult)
         dispatch(payOrder(orderId, paymentResult))
     }
+    
+    const cashPaymentHandler = () => {
+     
+        dispatch(payCashOrder(orderId))
+    } 
 
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
@@ -246,7 +260,7 @@ const OrderScreen = ({match, history}) => {
                                                                     <Col>${order.totalPrice}</Col>
                                                                 </Row>
                                                             </ListGroup.Item>
-                                                        {!order.isPaid && (
+                                                        {(!order.isPaid && order.paymentMethod === 'PayPal') && (
                                                             <ListGroup.Item>
                                                                 {loadingPay && <Loader />}
                                                                 {!sdkReady? <Loader /> :
@@ -255,6 +269,16 @@ const OrderScreen = ({match, history}) => {
                                                                     onSuccess={successPaymentHandler} />
                                                                 )
                                                                 }
+                                                            </ListGroup.Item>                                  
+                                                        )
+                                                        }   
+                                                        {(!order.isPaid && order.paymentMethod === 'Cash') &&        
+                                                        (
+                                                            <ListGroup.Item>
+                                                                 {loadingPayCash && <Loader />}
+                                                               <Button type='button' className='btn btn-block' onClick={cashPaymentHandler}>
+                                                                    Cash amount {order.totalPrice} received by {userInfo.name}
+                                                                </Button>
                                                             </ListGroup.Item>                                  
                                                         )}
 

@@ -42,9 +42,9 @@ const PaymentScreen = ({ history }) => {
                     defaultChecked = {paymentMethod === 'PayPal'}
                     onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
                 
-                    <Form.Check type='radio' label='My points' 
-                    id='MyPoints' name='paymentMethod' value='MyPoint'
-                    defaultChecked = {paymentMethod === 'MyPoint'}
+                    <Form.Check type='radio' label='Cash' 
+                    id='Cash' name='paymentMethod' value='Cash'
+                    defaultChecked = {paymentMethod === 'Cash'}
                     onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
                     
                 </Col>
